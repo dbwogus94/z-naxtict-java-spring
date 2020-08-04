@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/common/common.jsp"%>    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>boardWrite</title>
 </head>
 <script type="text/javascript">
@@ -12,30 +12,29 @@
 	$j(document).ready(function(){
 		
 		$j("#submit").on("click",function(){
-			var $frm = $j('.boardWrite :input'); 	// Å¬·¡½º¸íÀÌ .boardWriteÀÎ inputÅÂ±×(textarea Æ÷ÇÔ) °¡Á®¿À±â >> ¹è¿­ 
-			var param = $frm.serialize();			// Á÷¿­È­ Äõ¸®½ºÆ®¸µÀ¸·Î ¸¸µé¾îÁØ´Ù.
+			var $frm = $j('.boardWrite :input'); 	// í´ë˜ìŠ¤ëª…ì´ .boardWriteì¸ inputíƒœê·¸(textarea í¬í•¨) ê°€ì ¸ì˜¤ê¸° >> ë°°ì—´ 
+			var param = $frm.serialize();			// ì§ì—´í™” ì¿¼ë¦¬ìŠ¤íŠ¸ë§ìœ¼ë¡œ ë§Œë“¤ì–´ì¤€ë‹¤.
 			
 			$j.ajax({
 			    url : "/board/boardWriteAction.do",
 			    dataType: "json",
 			    type: "POST",
-			    data : param,			// post¹æ½Ä¿¡ »ç¿ëÇÒ Äõ¸®½ºÆ®¸µ
+			    data : param,			// postë°©ì‹ì— ì‚¬ìš©í•  ì¿¼ë¦¬ìŠ¤íŠ¸ë§
 			    success: function(data, textStatus, jqXHR)
 			    {
-					alert("ÀÛ¼º¿Ï·á");
+					alert("ì‘ì„±ì™„ë£Œ");
 					
-					alert("¸Ş¼¼Áö:"+data.success);
+					alert("ë©”ì„¸ì§€:"+data.success);
 					
 					location.href = "/board/boardList.do?pageNo=1";
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
-			    	alert("½ÇÆĞ");
+			    	alert("ì‹¤íŒ¨");
 			    }
 			});
 		});
 	});
-	
 
 </script>
 <body>
@@ -43,23 +42,36 @@
 	<table align="center">
 		<tr>
 			<td align="right">
-			<input id="submit" type="button" value="ÀÛ¼º">
+				<input id="submit" type="button" value="ì‘ì„±">
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<table border ="1"> 
+				<table border ="1">
+					<tr>
+						<td align="center">
+							Type
+						</td>
+						<td>
+							<select name="boardType">
+								<option value="ì¼ë°˜">ì¼ë°˜</option>
+								<option value="Q&A">Q&A</option>
+								<option value="ìµëª…">ìµëª…</option>
+								<option value="ììœ ">ììœ </option>
+							</select>		
+						</td>
+					</tr>
 					<tr>
 						<td width="120" align="center">
-						Title
+							Title
 						</td>
 						<td width="400">
-						<input name="boardTitle" type="text" size="50" value="${board.boardTitle}"> 
+							<input name="boardTitle" type="text" size="50" value="${board.boardTitle}"> 
 						</td>
 					</tr>
 					<tr>
 						<td height="300" align="center">
-						Comment
+							Comment
 						</td>
 						<td valign="top">
 							<textarea name="boardComment"  rows="20" cols="55">${board.boardComment}</textarea>
@@ -67,7 +79,7 @@
 					</tr>
 					<tr>
 						<td align="center">
-						Writer
+							Writer
 						</td>
 						<td>
 						</td>

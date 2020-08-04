@@ -1,5 +1,7 @@
 package com.spring.board.vo;
 
+import java.util.Arrays;
+
 public class BoardVo {
 	
 	private String 	boardType;
@@ -10,6 +12,8 @@ public class BoardVo {
 	private String	modifier;
 	private int totalCnt;
 	
+	/* 게시판 필터에 사용 */
+	private String[] boardTypeArr;
 	
 	public int getTotalCnt() {
 		return totalCnt;
@@ -53,13 +57,18 @@ public class BoardVo {
 	public void setModifier(String modifier) {
 		this.modifier = modifier;
 	}
+	public String[] getBoardTypeArr() {
+		return boardTypeArr;
+	}
+	public void setBoardTypeArr(String[] boardTypeArr) {
+		this.boardTypeArr = boardTypeArr;
+	}
 	
 	@Override
 	public String toString() {
 		return "BoardVo [boardType=" + boardType + ", boardNum=" + boardNum + ", boardTitle=" + boardTitle
 				+ ", boardComment=" + boardComment + ", creator=" + creator + ", modifier=" + modifier + ", totalCnt="
-				+ totalCnt + "]";
+				+ totalCnt + ", boardTypeArr=" + Arrays.toString(boardTypeArr) + "]";
 	}
-	
-	
+
 }

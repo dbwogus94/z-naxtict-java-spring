@@ -9,7 +9,7 @@ public interface BoardDao {
 
 	public String selectTest() throws Exception;
 
-	public List<BoardVo> selectBoardList(PageVo pageVo) throws Exception;
+	public List<BoardVo> selectBoardList(PageVo pageVo, String[] boardTypeArr) throws Exception;
 
 	public BoardVo selectBoard(BoardVo boardVo) throws Exception;
 

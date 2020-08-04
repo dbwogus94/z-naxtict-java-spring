@@ -23,10 +23,10 @@ public class boardServiceImpl implements boardService{
 	}
 	
 	@Override
-	public List<BoardVo> SelectBoardList(PageVo pageVo) throws Exception {
+	public List<BoardVo> SelectBoardList(PageVo pageVo, String[] boardTypeArr) throws Exception {
 		// TODO Auto-generated method stub
 		
-		return boardDao.selectBoardList(pageVo);
+		return boardDao.selectBoardList(pageVo, boardTypeArr);
 	}
 	
 	@Override

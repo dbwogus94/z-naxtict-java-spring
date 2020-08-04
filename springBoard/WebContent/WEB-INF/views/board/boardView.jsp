@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/common/common.jsp"%>    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>boardView</title>
 </head>
 <script type="text/javascript">
@@ -20,17 +20,17 @@ function boardDelete(boardType, boardNum){
 	    success: function(data, textStatus, jqXHR)
 	    {
 			if(data.res > 0){
-				alert("»èÁ¦¿Ï·á");
-				alert("¸Ş¼¼Áö: °Ô½Ã¹°À» ¼º°øÀûÀ¸·Î »èÁ¦Çß½À´Ï´Ù.");
+				alert("ì‚­ì œì™„ë£Œ");
+				alert("ë©”ì„¸ì§€: ê²Œì‹œë¬¼ì„ ì„±ê³µì ìœ¼ë¡œ ì‚­ì œí–ˆìŠµë‹ˆë‹¤.");
 				location.href="/board/boardList.do"
 			} else {
-				alert("¸Ş¼¼Áö: °Ô½Ã¹° »èÁ¦¸¦  ½ÇÆĞÇß½À´Ï´Ù. °ü¸®ÀÚ¿¡°Ô ¹®ÀÇÇÏ¼¼¿ä.")
+				alert("ë©”ì„¸ì§€: ê²Œì‹œë¬¼ ì‚­ì œë¥¼  ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤. ê´€ë¦¬ìì—ê²Œ ë¬¸ì˜í•˜ì„¸ìš”.")
 			}
 			return false
 	    },
 	    error: function (jqXHR, textStatus, errorThrown)
 	    {
-	    	alert("½ÇÆĞ");
+	    	alert("ì‹¤íŒ¨");
 	    }
 	});
 	return false;
@@ -71,7 +71,7 @@ function boardDelete(boardType, boardNum){
 	<tr>
 		<td align="right">
 			<a href="/board/boardUpdate.do?boardType=${board.boardType}&boardNum=${board.boardNum}">update</a>
-			<a href="" onclick="return boardDelete(${board.boardType}, ${board.boardNum})">delete</a>
+			<a href="" onclick="return boardDelete('${board.boardType}', ${board.boardNum})">delete</a>
 			<a href="/board/boardList.do">List</a>
 			
 		</td>

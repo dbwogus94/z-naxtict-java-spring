@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/common/common.jsp"%>   
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <script type="text/javascript">
@@ -20,18 +20,18 @@ function boardUpdate(boardType, boardNum, boardTitle, boardComment){
 	    success: function(data, textStatus, jqXHR)
 	    {
 			if(data.res > 0){
-				alert("¼öÁ¤¿Ï·á");
-				alert("¸Ş¼¼Áö: °Ô½Ã¹°À» ¼º°øÀûÀ¸·Î ¼öÁ¤Çß½À´Ï´Ù.");
+				alert("ìˆ˜ì •ì™„ë£Œ");
+				alert("ë©”ì„¸ì§€: ê²Œì‹œë¬¼ì„ ì„±ê³µì ìœ¼ë¡œ ìˆ˜ì •í–ˆìŠµë‹ˆë‹¤.");
 				location.href="/board/boardList.do"
 			} else {
-				alert("¸Ş¼¼Áö: °Ô½Ã¹° ¼öÁ¤À»  ½ÇÆĞÇß½À´Ï´Ù. °ü¸®ÀÚ¿¡°Ô ¹®ÀÇÇÏ¼¼¿ä.")
+				alert("ë©”ì„¸ì§€: ê²Œì‹œë¬¼ ìˆ˜ì •ì„  ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤. ê´€ë¦¬ìì—ê²Œ ë¬¸ì˜í•˜ì„¸ìš”.");
 				location.href="/board/boardList.do"
 			}
 			return false
 	    },
 	    error: function (jqXHR, textStatus, errorThrown)
 	    {
-	    	alert("½ÇÆĞ");
+	    	alert("ì‹¤íŒ¨");
 	    }
 	});
 	return false;
@@ -45,25 +45,38 @@ function boardUpdate(boardType, boardNum, boardTitle, boardComment){
 		<td>
 			<table border ="1">
 				<tr>
+					<td align="center">
+						Type
+					</td>
+					<td>
+						<select name="boardType" class="boardWrite">
+							<option value="ì¼ë°˜" ${board.boardType eq 'a01'? "selected":""}>ì¼ë°˜</option>
+							<option value="Q&A" ${board.boardType eq 'a02'? "selected":""}>Q&A</option>
+							<option value="ìµëª…" ${board.boardType eq 'a03'? "selected":""}>ìµëª…</option>
+							<option value="ììœ " ${board.boardType eq 'a04'? "selected":""}>ììœ </option>
+						</select>		
+					</td>
+				</tr>
+				<tr>
 					<td width="120" align="center">
-					Title
+						Title
 					</td>
 					<td width="400">
-						<input name="boardTitle" type="text" size="50" value="${board.boardTitle}">
-						<input type="button" value="¼öÁ¤" onclick="boardUpdate(${board.boardType}, ${board.boardNum}, '${board.boardTitle}', '${board.boardComment}')"> 
+						<input name="boardTitle" type="text" size="50" class="boardWrite" value="${board.boardTitle}">
+						<input type="button" value="ìˆ˜ì •" onclick="boardUpdate('${board.boardType}', ${board.boardNum}, '${board.boardTitle}', '${board.boardComment}')"> 
 					</td>
 				</tr>
 				<tr>
 					<td height="300" align="center">
-					Comment
+						Comment
 					</td>
 					<td>
-						<textarea name="boardComment"  rows="20" cols="55">${board.boardComment}</textarea>
+						<textarea name="boardComment" class="boardWrite" rows="20" cols="55">${board.boardComment}</textarea>
 					</td>
 				</tr>
 				<tr>
 					<td align="center">
-					Writer
+						Writer
 					</td>
 					<td>
 					</td>

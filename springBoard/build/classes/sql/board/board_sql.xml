@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
-    
+   
     <resultMap type="com.spring.board.vo.BoardVo" id="boardVo">
     	<result property="boardType" 	column="BOARD_TYPE"/>
     	<result property="boardNum" 	column="BOARD_NUM"/>
@@ -9,7 +9,7 @@
     	<result property="boardComment" column="BOARD_COMMENT"/>
     </resultMap>
     
-    <select id="boardList" parameterType="com.spring.board.vo.PageVo" resultMap="boardVo">
+    <select id="boardList" parameterType="map" resultMap="boardVo">
     	/* board.boardList */
         SELECT 
 		  BOARD_TYPE
@@ -26,10 +26,16 @@
 				,BOARD_COMMENT
 		      	,ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW
 		      	,COUNT(*) OVER() AS TOTAL_CNT
-			FROM
-				BOARD	
+			FROM BOARD	
+		<if test='boardTypeArr != null or boardTypeArr != "" '>
+			WHERE BOARD_TYPE IN (SELECT CODE_ID FROM COM_CODE WHERE CODE_NAME IN
+				<foreach collection="boardTypeArr" item="boardType" open="(" separator="," close=")">
+					#{boardType}
+				</foreach>
+			)
+		</if>
 		)
-		WHERE NUMROW BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})*10
+		WHERE NUMROW BETWEEN (#{pageVo.pageNo}-1)*10 + 1 AND (#{pageVo.pageNo})*10
     </select>
     
     <select id="boardTotal" parameterType="Integer" resultType="Integer">
@@ -54,29 +60,20 @@
     
     <select id="boardInsert" parameterType="com.spring.board.vo.BoardVo">
     	/* board.boardInsert */	
-        INSERT INTO 
-        BOARD
-        (BOARD_TYPE
-        ,BOARD_NUM
-        ,BOARD_TITLE
-        ,BOARD_COMMENT
-        ,CREATOR
-        ,CREATE_TIME
-        ,MODIFIER
-        ,MODIFIED_TIME
-        )
-        VALUES
-        ('1'
-        ,(SELECT NVL(MAX(BOARD_NUM)+1, 1)
-		  FROM BOARD
-		  WHERE BOARD_TYPE = '1')
-        ,#{boardTitle}
-        ,#{boardComment}
-        ,'SYSTEM'
-        ,TO_CHAR(SYSDATE)
-        ,'SYSTEM'
-        ,TO_CHAR(SYSDATE)
-        )
+	    INSERT INTO BOARD (BOARD_TYPE ,BOARD_NUM ,BOARD_TITLE ,BOARD_COMMENT ,CREATOR ,CREATE_TIME, MODIFIER ,MODIFIED_TIME)
+		VALUES (
+				 ( SELECT CODE_ID FROM COM_CODE
+				   WHERE CODE_NAME = #{boardType})
+		        ,( SELECT NVL(MAX(BOARD_NUM)+1, 1)
+				   FROM BOARD
+				   WHERE BOARD_TYPE = (SELECT CODE_ID FROM COM_CODE WHERE CODE_NAME = #{boardType}))
+		        ,#{boardTitle}
+		        ,#{boardComment}
+		        ,'SYSTEM'
+		        ,TO_CHAR(SYSDATE)
+		        ,'SYSTEM'
+		        ,TO_CHAR(SYSDATE)
+		        )
     </select>
     
     <update id="boardUpdate" parameterType="com.spring.board.vo.BoardVo">

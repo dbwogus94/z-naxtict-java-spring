@@ -1,8 +1,8 @@
 package com.spring.board.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +36,9 @@ public class BoardController {
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
 	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
-	public String boardList(Locale locale, Model model,PageVo pageVo) throws Exception{
+	public String boardList(Locale locale, Model model,PageVo pageVo, @RequestParam(value = "boardTypeArr", required = false) String[] boardTypeArr ) throws Exception{
+		logger.info("[boardList.do] 글 조회 ==> 페이지 : " + pageVo + " 필터 내용 : " + Arrays.toString(boardTypeArr));
+		
 		
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 		
@@ -48,8 +49,12 @@ public class BoardController {
 			pageVo.setPageNo(page);;
 		}
 		
-		boardList = boardService.SelectBoardList(pageVo);
-		totalCnt = boardService.selectBoardCnt();
+		if(boardTypeArr == null) { // 다른 방법 없는지 체크하자
+			boardTypeArr = new String[]{"일반", "Q&A", "익명", "자유"};
+		}
+		
+		boardList = boardService.SelectBoardList(pageVo, boardTypeArr);
+		totalCnt = boardService.selectBoardCnt(); // 조건마다 나오게 바꾸자
 		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("totalCnt", totalCnt);
@@ -62,10 +67,7 @@ public class BoardController {
 	public String boardView(Locale locale, Model model
 			,@PathVariable("boardType")String boardType
 			,@PathVariable("boardNum")int boardNum) throws Exception{
-		
 		BoardVo boardVo = new BoardVo();
-		
-		
 		boardVo = boardService.selectBoard(boardType,boardNum);
 		
 		model.addAttribute("boardType", boardType);
@@ -83,7 +85,7 @@ public class BoardController {
 	
 	@RequestMapping(value = "/board/boardWriteAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String boardWriteAction(Locale locale,BoardVo boardVo) throws Exception{
+	public String boardWriteAction(Locale locale, BoardVo boardVo) throws Exception{
 		
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
