@@ -1,6 +1,5 @@
 package com.spring.board.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,8 +36,6 @@ public class BoardController {
 	
 	@Autowired
 	private ComCodeService comCodeService;
-	
-	
 	
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	

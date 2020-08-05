@@ -21,7 +21,7 @@ public class BoardDaoImpl implements BoardDao{
 	private Logger logger = LoggerFactory.getLogger(BoardDaoImpl.class);
 	
 	@Autowired
-	private SqlSession sqlSession;
+	private SqlSession sqlSession;		// root-context에서 SqlSessionTemplate으로 Bean을 설정해도 ibatis의 SqlSession으로 사용이 가능함
 	
 	@Override
 	public String selectTest() throws Exception {

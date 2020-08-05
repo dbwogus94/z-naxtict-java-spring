@@ -122,23 +122,78 @@ WHERE CODE_NAME = 'Q&A'
 
 SELECT CODE_ID, CODE_NAME 
 FROM COM_CODE
-WHERE CODE_TYPE = 'menu'
+WHERE CODE_TYPE = 'phone'
 		
 
 --===========================================================================
 
 SELECT 
-	USER_ID,
-	USER_PW,
-	USER_PHONE1,
-	USER_PHONE2,
-	USER_PHONE3,
-	USER_ADDR1,
-	USER_ADDR2,
-	USER_COMPANY,
-	CREATOR,
-	CREATE_TIME,
-	MODIFIER,
-	MODIFIED_TIME
+	USER_ID,		-- pk, 15byte 
+	USER_PW,		-- 16byte, 
+	USER_NAME,		-- 이름
+	USER_PHONE1,	-- 010
+	USER_PHONE2,	-- 앞자리 '1234'
+	USER_PHONE3,	-- 뒷자리 '5678'
+	USER_ADDR1,		-- postNo : 우편번호 ex) 'xxx-xxx'
+	USER_ADDR2,		-- 나머지 주소  
+	USER_COMPANY,	-- 회사명
+	CREATOR,		-- 'SYSTEM'
+	CREATE_TIME,    -- TO_CHAR(SYSDATE)
+	MODIFIER,		-- 'SYSTEM'
+	MODIFIED_TIME	-- TO_CHAR(SYSDATE)
 FROM USER_INFO
+
+SELECT COUNT(*) FROM USER_INFO
+WHERE USER_ID = 'testUser01'
+
+SELECT * FROM USER_INFO
+WHERE USER_ID = 'test01'
+AND USER_PW = 'a12345'
+
+INSERT INTO 
+USER_INFO(
+	USER_ID
+	,USER_PW
+	,USER_NAME
+	,USER_PHONE1
+	,USER_PHONE2
+	,USER_PHONE3
+	,USER_ADDR1
+	,USER_ADDR2
+	,USER_COMPANY
+	,CREATOR
+	,CREATE_TIME
+	,MODIFIER
+	,MODIFIED_TIME
+	)
+	VALUES(
+		'testUser01'
+		,'a1234'
+		,'홍길동'
+		,'010'
+		,'xxxx'
+		,'xxxx'
+		,'123-345'
+		,'서울시 구로구 디지털로 242 한화비즈메트로 1차'
+		,'넥스트아이씨티'
+		,'SYSTEM'
+        ,TO_CHAR(SYSDATE)
+        ,'SYSTEM'
+        ,TO_CHAR(SYSDATE)
+        )        
+		
+DELETE FROM USER_INFO 
+WHERE USER_ID = 'testUser01'
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+
 

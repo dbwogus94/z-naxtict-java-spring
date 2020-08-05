@@ -38,6 +38,17 @@
 <form action="/board/boardList.do" method="get">
 <table  align="center">
 	<tr>
+		<td align="left">
+			<c:choose>
+				<c:when test="${empty login}">
+					<a href="/user/userLogin.do">login</a>
+					<a href="/user/userJoin.do">join</a>
+				</c:when>
+				<c:otherwise>
+					<a href="/user/userLogout.do">logout</a>
+				</c:otherwise>
+			</c:choose>
+		</td>
 		<td align="right">
 			total : ${totalCnt}
 		</td>

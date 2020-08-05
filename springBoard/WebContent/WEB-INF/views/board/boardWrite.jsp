@@ -11,34 +11,40 @@
 
 	$j(document).ready(function(){
 		
-		$j("#submit").on("click",function(){
-			var $frm = $j('.boardWrite :input'); 	// 클래스명이 .boardWrite인 input태그(textarea 포함) 가져오기 >> 배열 
-			var param = $frm.serialize();			// 직열화 쿼리스트링으로 만들어준다.
-			
-			$j.ajax({
-			    url : "/board/boardWriteAction.do",
-			    dataType: "json",
-			    type: "POST",
-			    data : param,			// post방식에 사용할 쿼리스트링
-			    success: function(data, textStatus, jqXHR)
-			    {
-					alert("작성완료");
+			$j("#submit").on("click",function(){
+				var creator = document.getElementsByName("creator")[0].value;
+				console.log(creator)
+				if(creator === ""){
+					alert("글을 작성하시려면 로그인 해주세요")
+				} else {
+					var $frm = $j('.boardWrite :input'); 	// 클래스명이 .boardWrite인 input태그(textarea 포함) 가져오기 >> 배열 
+					var param = $frm.serialize();			// 직열화 쿼리스트링으로 만들어준다.
 					
-					alert("메세지:"+data.success);
+					$j.ajax({
+					    url : "/board/boardWriteAction.do",
+					    dataType: "json",
+					    type: "POST",
+					    data : param,			// post방식에 사용할 쿼리스트링
+					    success: function(data, textStatus, jqXHR)
+					    {
+							alert("작성완료");
+							alert("메세지: "+data.success);
+							location.href = "/board/boardList.do?pageNo=1";
+					    },
+					    error: function (jqXHR, textStatus, errorThrown)
+					    {
+					    	alert("실패");
+					    }
+					});
 					
-					location.href = "/board/boardList.do?pageNo=1";
-			    },
-			    error: function (jqXHR, textStatus, errorThrown)
-			    {
-			    	alert("실패");
-			    }
-			});
-		});
+				}
+			});	
 	});
 
 </script>
 <body>
 <form class="boardWrite">
+	<input name="creator" type="hidden" size="50" value="${login.userId}"/>
 	<table align="center">
 		<tr>
 			<td align="right">
@@ -78,7 +84,14 @@
 					</tr>
 					<tr>
 						<td align="center">
-							Writer
+							<c:choose>
+								<c:when test="${empty login}">
+									Writer
+								</c:when>
+								<c:otherwise>
+									${login.userId}
+								</c:otherwise>
+							</c:choose>
 						</td>
 						<td>
 						</td>

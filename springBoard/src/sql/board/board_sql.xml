@@ -43,11 +43,10 @@
 			COUNT(*) AS TOTAL_CNT
 		FROM BOARD
 		<if test='boardTypeArr != null or boardTypeArr != "" '>
-			WHERE BOARD_TYPE IN (SELECT CODE_ID FROM COM_CODE WHERE CODE_NAME IN
+			WHERE BOARD_TYPE IN 
 				<foreach collection="boardTypeArr" item="boardType" open="(" separator="," close=")">
 					#{boardType}
 				</foreach>
-			)
 		</if>	
     </select>
     	
