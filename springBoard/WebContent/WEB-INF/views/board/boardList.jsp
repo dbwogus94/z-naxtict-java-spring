@@ -60,18 +60,11 @@
 					
 					<tr>
 						<td align="center">
-							<c:if test="${list.boardType eq 'a01'}">
-								일반
-							</c:if>
-							<c:if test="${list.boardType eq 'a02'}">
-								Q&A
-							</c:if>
-							<c:if test="${list.boardType eq 'a03'}">
-								익명
-							</c:if>
-							<c:if test="${list.boardType eq 'a04'}">
-								자유
-							</c:if>
+							<c:forEach items="${comCodeList}" var="comCodeVo">
+								<c:if test="${list.boardType eq comCodeVo.codeId }">
+									${comCodeVo.codeName }
+								</c:if>
+							</c:forEach>
 						</td>
 						<td>
 							${list.boardNum}
@@ -92,10 +85,9 @@
 	<tr>
 		<td align="left">
 			<input type="checkbox" id="all" onclick="checkAll(this.checked)" />전체&nbsp;
-		    <input type="checkbox" name="boardTypeArr" value="일반" />일반&nbsp; 
-		    <input type="checkbox" name="boardTypeArr" value="Q&A" />Q&A&nbsp;
-		    <input type="checkbox" name="boardTypeArr" value="익명" />익명&nbsp;
-		    <input type="checkbox" name="boardTypeArr" value="자유" />자유&nbsp;
+			<c:forEach items="${comCodeList}" var="comCodeVo">
+				<input type="checkbox" name="boardTypeArr" value="${comCodeVo.codeId }" />${comCodeVo.codeName }&nbsp;
+			</c:forEach>
 			<input type="submit" value="조회"/>
 		</td>
 	</tr> 

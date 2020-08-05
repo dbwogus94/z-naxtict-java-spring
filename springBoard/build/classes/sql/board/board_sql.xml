@@ -28,22 +28,27 @@
 		      	,COUNT(*) OVER() AS TOTAL_CNT
 			FROM BOARD	
 		<if test='boardTypeArr != null or boardTypeArr != "" '>
-			WHERE BOARD_TYPE IN (SELECT CODE_ID FROM COM_CODE WHERE CODE_NAME IN
+			WHERE BOARD_TYPE IN 
 				<foreach collection="boardTypeArr" item="boardType" open="(" separator="," close=")">
 					#{boardType}
 				</foreach>
-			)
 		</if>
 		)
 		WHERE NUMROW BETWEEN (#{pageVo.pageNo}-1)*10 + 1 AND (#{pageVo.pageNo})*10
     </select>
     
-    <select id="boardTotal" parameterType="Integer" resultType="Integer">
+    <select id="boardTotal" parameterType="map" resultType="Integer">
     	/* board.boardTotal */
-		  SELECT
-		      	COUNT(*) AS TOTAL_CNT
-			FROM
-				BOARD	
+		SELECT
+			COUNT(*) AS TOTAL_CNT
+		FROM BOARD
+		<if test='boardTypeArr != null or boardTypeArr != "" '>
+			WHERE BOARD_TYPE IN (SELECT CODE_ID FROM COM_CODE WHERE CODE_NAME IN
+				<foreach collection="boardTypeArr" item="boardType" open="(" separator="," close=")">
+					#{boardType}
+				</foreach>
+			)
+		</if>	
     </select>
     	
     <select id="boardView" parameterType="com.spring.board.vo.BoardVo" resultMap="boardVo">
@@ -60,13 +65,20 @@
     
     <select id="boardInsert" parameterType="com.spring.board.vo.BoardVo">
     	/* board.boardInsert */	
-	    INSERT INTO BOARD (BOARD_TYPE ,BOARD_NUM ,BOARD_TITLE ,BOARD_COMMENT ,CREATOR ,CREATE_TIME, MODIFIER ,MODIFIED_TIME)
+	    INSERT INTO BOARD (
+	    BOARD_TYPE 
+	    ,BOARD_NUM 
+	    ,BOARD_TITLE 
+	    ,BOARD_COMMENT 
+	    ,CREATOR 
+	    ,CREATE_TIME
+	    , MODIFIER 
+	    ,MODIFIED_TIME)
 		VALUES (
-				 ( SELECT CODE_ID FROM COM_CODE
-				   WHERE CODE_NAME = #{boardType})
+				 #{boardType}
 		        ,( SELECT NVL(MAX(BOARD_NUM)+1, 1)
 				   FROM BOARD
-				   WHERE BOARD_TYPE = (SELECT CODE_ID FROM COM_CODE WHERE CODE_NAME = #{boardType}))
+				   WHERE BOARD_TYPE = #{boardType})
 		        ,#{boardTitle}
 		        ,#{boardComment}
 		        ,'SYSTEM'
@@ -91,6 +103,5 @@
 		WHERE BOARD_TYPE = #{boardType}
 		AND BOARD_NUM = #{boardNum}
     </delete>
-    
     
 </mapper>

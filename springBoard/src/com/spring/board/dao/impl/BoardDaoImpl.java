@@ -45,9 +45,11 @@ public class BoardDaoImpl implements BoardDao{
 	}
 	
 	@Override
-	public int selectBoardCnt() throws Exception {
+	public int selectBoardCnt(String[] boardTypeArr) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("board.boardTotal");
+		Map<String, Object> parm = new HashMap<String, Object>();
+		parm.put("boardTypeArr", boardTypeArr);
+		return sqlSession.selectOne("board.boardTotal", parm);
 	}
 	
 	@Override

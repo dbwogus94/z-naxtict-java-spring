@@ -30,9 +30,9 @@ public class boardServiceImpl implements boardService{
 	}
 	
 	@Override
-	public int selectBoardCnt() throws Exception {
+	public int selectBoardCnt(String[] boardTypeArr) throws Exception {
 		// TODO Auto-generated method stub
-		return boardDao.selectBoardCnt();
+		return boardDao.selectBoardCnt(boardTypeArr);
 	}
 	
 	@Override

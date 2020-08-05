@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.board.service.ComCodeService;
 import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.PageVo;
 import com.spring.common.CommonUtil;
 
@@ -31,34 +33,42 @@ import com.spring.common.CommonUtil;
 public class BoardController {
 	
 	@Autowired 
-	boardService boardService;
+	private boardService boardService;
+	
+	@Autowired
+	private ComCodeService comCodeService;
+	
+	
 	
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
 	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
 	public String boardList(Locale locale, Model model,PageVo pageVo, @RequestParam(value = "boardTypeArr", required = false) String[] boardTypeArr ) throws Exception{
 		logger.info("[boardList.do] 글 조회 ==> 페이지 : " + pageVo + " 필터 내용 : " + Arrays.toString(boardTypeArr));
-		
-		
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
+		List<ComCodeVo> comCodeList = new ArrayList<ComCodeVo>();
 		
 		int page = 1;
 		int totalCnt = 0;
-		
 		if(pageVo.getPageNo() == 0){
-			pageVo.setPageNo(page);;
+			pageVo.setPageNo(page);
 		}
 		
-		if(boardTypeArr == null) { // 다른 방법 없는지 체크하자
-			boardTypeArr = new String[]{"일반", "Q&A", "익명", "자유"};
+		comCodeList = comCodeService.getCode_type("menu");
+		if(boardTypeArr == null) {
+			boardTypeArr = new String[comCodeList.size()];
+			for(int i = 0; i<boardTypeArr.length; i++) {
+				boardTypeArr[i] = comCodeList.get(i).getCodeId();
+			}
 		}
 		
 		boardList = boardService.SelectBoardList(pageVo, boardTypeArr);
-		totalCnt = boardService.selectBoardCnt(); // 조건마다 나오게 바꾸자
+		totalCnt = boardService.selectBoardCnt(boardTypeArr);
 		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("pageNo", page);
+		model.addAttribute("comCodeList", comCodeList);
 		
 		return "board/boardList";
 	}
@@ -80,6 +90,8 @@ public class BoardController {
 	@RequestMapping(value = "/board/boardWrite.do", method = RequestMethod.GET)
 	public String boardWrite(Locale locale, Model model) throws Exception{
 		logger.info("[boardWrite.do] 글 작성 페이지");
+		List<ComCodeVo> comCodeList = comCodeService.getCode_type("menu");
+		model.addAttribute("comCodeList", comCodeList);
 		return "board/boardWrite";
 	}
 	
@@ -104,7 +116,9 @@ public class BoardController {
 	public String boardUpdate(Model model, HttpServletResponse response, @RequestParam(value="boardType", defaultValue = "1")String boardType, @RequestParam(value="boardNum", defaultValue = "1")int boardNum) throws Exception {
 		logger.info("[boardUpdate.do] 글 수정 페이지 : " + boardType + " : " + boardNum);
 		BoardVo boardVo = boardService.selectBoard(boardType, boardNum);
+		List<ComCodeVo> comCodeList = comCodeService.getCode_type("menu");
 		model.addAttribute("board", boardVo);
+		model.addAttribute("comCodeList", comCodeList);
 		return "board/boardUpdate";
 	}
 	

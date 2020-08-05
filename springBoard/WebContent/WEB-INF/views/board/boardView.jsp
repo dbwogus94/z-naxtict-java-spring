@@ -73,7 +73,6 @@ function boardDelete(boardType, boardNum){
 			<a href="/board/boardUpdate.do?boardType=${board.boardType}&boardNum=${board.boardNum}">update</a>
 			<a href="" onclick="return boardDelete('${board.boardType}', ${board.boardNum})">delete</a>
 			<a href="/board/boardList.do">List</a>
-			
 		</td>
 	</tr>
 </table>	

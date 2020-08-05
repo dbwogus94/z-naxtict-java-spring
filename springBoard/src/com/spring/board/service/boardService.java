@@ -13,7 +13,7 @@ public interface boardService {
 
 	public BoardVo selectBoard(String boardType, int boardNum) throws Exception;
 
-	public int selectBoardCnt() throws Exception;
+	public int selectBoardCnt(String[] boardTypeArr) throws Exception;
 
 	public int boardInsert(BoardVo boardVo) throws Exception;
 	

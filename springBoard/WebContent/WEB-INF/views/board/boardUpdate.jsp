@@ -49,12 +49,11 @@ function boardUpdate(boardType, boardNum, boardTitle, boardComment){
 						Type
 					</td>
 					<td>
-						<select name="boardType" class="boardWrite">
-							<option value="일반" ${board.boardType eq 'a01'? "selected":""}>일반</option>
-							<option value="Q&A" ${board.boardType eq 'a02'? "selected":""}>Q&A</option>
-							<option value="익명" ${board.boardType eq 'a03'? "selected":""}>익명</option>
-							<option value="자유" ${board.boardType eq 'a04'? "selected":""}>자유</option>
-						</select>		
+						<c:forEach items="${comCodeList}" var="comCodeVo">
+							<c:if test="${board.boardType eq comCodeVo.codeId }">
+								${comCodeVo.codeName }
+							</c:if>
+						</c:forEach>
 					</td>
 				</tr>
 				<tr>
