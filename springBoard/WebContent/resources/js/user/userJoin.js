@@ -158,7 +158,7 @@ let onkeyprassEvent_Addr1 = (e) => {
 	// 숫자 >> onkeypress에서 인식
 	if (char_ASCII >= 48 && char_ASCII <= 57 ) {
 		msg.innerHTML = "";
-		let text = target.value
+		let text = target.value;
 		if(target.value.length == 3){
 			target.value = text.substring(0,3) + "-";
 		} else if(target.value.search("-") === -1 && target.value.length >= 6) {

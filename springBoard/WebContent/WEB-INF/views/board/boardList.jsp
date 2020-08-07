@@ -8,7 +8,6 @@
 <title>list</title>
 </head>
 <script type="text/javascript">
-
 	document.addEventListener("DOMContentLoaded", function () {
 	    //  == $(document).ready(function() {}
 		var chk = document.querySelectorAll("input[name='boardTypeArr']");
@@ -32,26 +31,27 @@
 			chk[i].checked = ischk;
 		}
 	}
-
 </script>
 <body>
 <form action="/board/boardList.do" method="get">
 <table  align="center">
 	<tr>
-		<td align="left">
+		<td colspan="2">
+			<span style="margin-right: 68%;">
 			<c:choose>
 				<c:when test="${empty login}">
 					<a href="/user/userLogin.do">login</a>
 					<a href="/user/userJoin.do">join</a>
 				</c:when>
 				<c:otherwise>
-					<a href="/user/userLogout.do">logout</a>
+					${login.userName }
 				</c:otherwise>
 			</c:choose>
+			</span>
+			<span style="text-align: right;">total : ${totalCnt}</span>
 		</td>
-		<td align="right">
-			total : ${totalCnt}
-		</td>
+		<td></td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>
@@ -91,6 +91,13 @@
 	<tr>
 		<td align="right">
 			<a href ="/board/boardWrite.do">글쓰기</a>
+			<c:choose>
+				<c:when test="${empty login}">
+				</c:when>
+				<c:otherwise>
+					<a href="/user/userLogout.do">로그아웃</a>
+				</c:otherwise>
+			</c:choose>
 		</td>
 	</tr> 
 	<tr>
