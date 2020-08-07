@@ -11,8 +11,14 @@
 	.msg{
 		font-size: 8pt;
 	}
+	
+	a:hover{
+		color: #ff0088;
+		text-decoration: underline;
+	}
 </style>
-<script src="/resources/js/userJoin.js"></script>
+<script src="/resources/js/util.js"></script>
+<script src="/resources/js/user/userJoin.js"></script>
 <body>
 <form action="" method="post">
 	<table align="center" width="400">
@@ -30,7 +36,7 @@
 							<input type="text" id="userId" name="userId" size="15" /> 
 							<input type="button" value="중복확인" onclick="idChk()" />
 							<br/>
-							<span class="msg"></span>
+							<span class="msg" id="msg_id"></span>
 						</td>
 					</tr>
 					<tr>
@@ -38,9 +44,9 @@
 							pw
 						</td>
 						<td>
-							<input type="password" name="userPw" size="18"  maxlength="12" onkeyup="pwChk()"/>
+							<input type="password" name="userPw" size="18"  maxlength="12" onchange="pwChk();"/>
 							<br/>
-							<span class="msg"></span>
+							<span class="msg" id="msg_pw"></span>
 						</td>
 					</tr>
 					<tr>
@@ -48,17 +54,19 @@
 							pw check
 						</td>
 						<td>
-							<input type="password" id="userPw_chk" size="18" maxlength="12" onkeyup="pwChk_eq()"/>
+							<input type="password" id="userPw_chk" size="18" maxlength="12" onchange=""/>
 							<br/>
-							<span class="msg"></span>
+							<span class="msg" id="msg_pwChk"></span>
 						</td>
 					</tr>
 					<tr>
-						<td align="center">
+						<td align="center"> 
 							name
-						</td>
+						</td> 
 						<td>
-							<input type="text" name="userName" size="20" />
+							<input type="text" name="userName" size="20"/>
+							<br/>
+							<span class="msg" id="msg_name"></span>
 						</td>
 					</tr>
 					<tr>
@@ -70,10 +78,10 @@
 								<c:forEach items="${comCodeList}" var="comCodeVo">
 									<option value="${comCodeVo.codeId }">${comCodeVo.codeName }</option>
 								</c:forEach>
-							</select>-<input type="text" name="userPhone2" size="2" maxlength="4" onkeyup="phoneChk(this)"/>-<input type="text" name="userPhone3" size="2" maxlength="4" onkeyup="phoneChk(this)"/>
+							</select>-<input type="text" name="userPhone2" size="2" maxlength="4" onchange="phoneChk(this);"/>-<input type="text" name="userPhone3" size="2" maxlength="4" onchange="phoneChk(this);"/>
 							<br/>
-							<span class="msg"></span>
-							<span class="msg"></span>
+							<span class="msg"  id="msg_phone1"></span>
+							<span class="msg" id="msg_phone2"></span>
 						</td>
 					</tr>
 					<tr>
@@ -81,9 +89,9 @@
 							postNo
 						</td>
 						<td>
-							<input type="text" name="userAddr1" size="20" onkeyup="postNoChk(this)"/>
+							<input type="text" name="userAddr1" maxlength="7" size="20"/>
 							<br/>
-							<span class="msg"></span>
+							<span class="msg" id="msg_postNo"></span>
 						</td>
 					</tr>
 					<tr>
@@ -92,6 +100,8 @@
 						</td>
 						<td>
 							<input type="text" name="userAddr2" size="20" />
+							<br/>
+							<span class="msg" id="msg_userAddr2"></span>
 						</td>
 					</tr>
 					<tr>
@@ -100,6 +110,8 @@
 						</td>
 						<td>
 							<input type="text" name="userCompany" size="20" />
+							<br/>
+							<span class="msg" id="msg_userCompany"></span>
 						</td>
 					</tr>
 				</table>
@@ -107,7 +119,7 @@
 		</tr>
 		<tr>
 			<td align="right">
-				<a href="" onclick="return confirm()">join</a>
+				<a  style="cursor:default" onclick="return confirm()">join</a>
 			</td>
 		</tr>
 	</table>

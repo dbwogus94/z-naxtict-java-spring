@@ -39,7 +39,6 @@ public class UserController {
 		return "user/userJoin";
 	}
 	
-	
 	@RequestMapping(value = "userIdCheck.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String idCheck(@RequestBody HashMap<String, String> input) {
@@ -72,7 +71,6 @@ public class UserController {
 		return "user/userLogin";
 	}
 	
-	
 	@RequestMapping(value="userLoginAction.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String userLoginAction(@RequestBody UserVo userVo, HttpSession session) {
@@ -94,7 +92,5 @@ public class UserController {
 		session.invalidate();
 		return "redirect:../board/boardList.do";
 	}
-	
-	
 	
 }
