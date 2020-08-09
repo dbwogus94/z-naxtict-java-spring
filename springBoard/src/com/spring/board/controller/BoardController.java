@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,60 +28,85 @@ import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.PageVo;
 import com.spring.common.CommonUtil;
+import com.spring.user.dao.UserDao;
+import com.spring.user.vo.UserVo;
 
 @Controller
 public class BoardController {
 	
 	@Autowired 
 	private boardService boardService;
-	
 	@Autowired
 	private ComCodeService comCodeService;
+	@Autowired
+	private UserDao userDao;
 	
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
 	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
-	public String boardList(Locale locale, Model model,PageVo pageVo, @RequestParam(value = "boardTypeArr", required = false) String[] boardTypeArr ) throws Exception{
-		logger.info("[boardList.do] 글 조회 ==> 페이지 : " + pageVo + " 필터 내용 : " + Arrays.toString(boardTypeArr));
+	public String boardList(Locale locale, Model model, PageVo pageVo) throws Exception{
+		logger.info("[boardList.do] 글 리스트 ==> 페이지 : " + pageVo);
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 		List<ComCodeVo> comCodeList = new ArrayList<ComCodeVo>();
-		
 		int page = 1;
 		int totalCnt = 0;
 		if(pageVo.getPageNo() == 0){
 			pageVo.setPageNo(page);
 		}
-		
+		// 검색조건 리스트 조회
 		comCodeList = comCodeService.getCode_type("menu");
-		if(boardTypeArr == null) {
-			boardTypeArr = new String[comCodeList.size()];
-			for(int i = 0; i<boardTypeArr.length; i++) {
-				boardTypeArr[i] = comCodeList.get(i).getCodeId();
-			}
+		String[] boardTypeArr = new String[comCodeList.size()];	
+		
+		for(int i = 0; i<boardTypeArr.length; i++) {
+			boardTypeArr[i] = comCodeList.get(i).getCodeId();
 		}
-		
+		// 리스트 조회
 		boardList = boardService.SelectBoardList(pageVo, boardTypeArr);
+		// 게시물 총개수 조회
 		totalCnt = boardService.selectBoardCnt(boardTypeArr);
-		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("pageNo", page);
 		model.addAttribute("comCodeList", comCodeList);
-		
 		return "board/boardList";
 	}
+	
+	@RequestMapping(value = "/board/boardSearch.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> boardSearch(PageVo pageVo, @RequestParam(value = "boardTypeArr", required = false) String[] boardTypeArr) throws Exception{
+		logger.info("[boardSearch.do] 글 조회 ==> 페이지 : " + Arrays.toString(boardTypeArr));
+		Map<String, Object> output = new HashMap<String, Object>();
+		List<BoardVo> boardList = new ArrayList<BoardVo>();
+		List<ComCodeVo> comCodeList = new ArrayList<ComCodeVo>();
+		if(pageVo.getPageNo() == 0){
+			pageVo.setPageNo(1);
+		}
+		// 리스트 조회
+		boardList = boardService.SelectBoardList(pageVo, boardTypeArr);
+		output.put("boardList", boardList);
+		// 검색조건 리스트 조회
+		comCodeList = comCodeService.getCode_type("menu");
+		output.put("comCodeList", comCodeList);
+		logger.info("[boardSearch.do] 글조회 output ==> " + output);
+		return output;
+	}
+	
 	
 	@RequestMapping(value = "/board/{boardType}/{boardNum}/boardView.do", method = RequestMethod.GET)
 	public String boardView(Locale locale, Model model
 			,@PathVariable("boardType")String boardType
 			,@PathVariable("boardNum")int boardNum) throws Exception{
 		BoardVo boardVo = new BoardVo();
+		// 게시물 조회
 		boardVo = boardService.selectBoard(boardType,boardNum);
-		
+		// 유저 이름 조회
+		String userName = userDao.searchName(boardVo.getCreator());
+		if(userName != null) {
+			model.addAttribute("userName", userName);
+		}
 		model.addAttribute("boardType", boardType);
 		model.addAttribute("boardNum", boardNum);
 		model.addAttribute("board", boardVo);
-		
 		return "board/boardView";
 	}
 	
@@ -94,18 +120,17 @@ public class BoardController {
 	
 	@RequestMapping(value = "/board/boardWriteAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String boardWriteAction(Locale locale, BoardVo boardVo) throws Exception{
-		
+	public String boardWriteAction(Locale locale, BoardVo boardVo, HttpSession session) throws Exception{
 		HashMap<String, String> result = new HashMap<String, String>();
-		CommonUtil commonUtil = new CommonUtil();
-		
-		int resultCnt = boardService.boardInsert(boardVo);
-		
-		result.put("success", (resultCnt > 0)?"Y":"N");
+		CommonUtil commonUtil = new CommonUtil(); 	// 
+		UserVo login = (UserVo) session.getAttribute("login");
+		if(login != null) {
+			boardVo.setCreator(login.getUserId());
+		}
+		int[] resultCnt = boardService.boardInsert(boardVo);
+		result.put("success", (resultCnt.length > 0)?"Y":"N");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ",result);
-		
-		System.out.println("callbackMsg::"+callbackMsg);
-		
+		logger.info("callbackMsg::"+callbackMsg);
 		return callbackMsg;
 	}
 	

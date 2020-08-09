@@ -30,4 +30,9 @@ public class UserServiceImpl implements UserService {
 	public UserVo login(UserVo userVo) {
 		return userDao.login(userVo);
 	}
+
+	@Override
+	public String searchName(String userId) {
+		return userDao.searchName(userId);
+	}
 }

@@ -2,6 +2,8 @@ package com.spring.board.service.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import com.spring.board.vo.PageVo;
 
 @Service
 public class boardServiceImpl implements boardService{
+	private Logger logger = LoggerFactory.getLogger(boardServiceImpl.class);
 	
 	@Autowired
 	BoardDao boardDao;
@@ -39,17 +42,29 @@ public class boardServiceImpl implements boardService{
 	public BoardVo selectBoard(String boardType, int boardNum) throws Exception {
 		// TODO Auto-generated method stub
 		BoardVo boardVo = new BoardVo();
-		
 		boardVo.setBoardType(boardType);
 		boardVo.setBoardNum(boardNum);
-		
 		return boardDao.selectBoard(boardVo);
 	}
 	
 	@Override
-	public int boardInsert(BoardVo boardVo) throws Exception {
-		// TODO Auto-generated method stub
-		return boardDao.boardInsert(boardVo);
+	public int[] boardInsert(BoardVo boardVo) throws Exception {
+		logger.info("[boardInsert] param " + boardVo);
+		String[] typeArr = boardVo.getBoardType().split(",");
+		String[] titleArr = boardVo.getBoardTitle().split(",");
+		String[] commentArr = boardVo.getBoardComment().split(",");
+		int[] res = new int[typeArr.length];
+		
+		for(int i = 0; i < typeArr.length; i++) {
+			BoardVo temp = new BoardVo();
+			temp.setBoardType(typeArr[i]);
+			temp.setBoardTitle(titleArr[i]);
+			temp.setBoardComment(commentArr[i]);
+			temp.setCreator(boardVo.getCreator());
+			res[i] = boardDao.boardInsert(temp);
+		}
+		
+		return res;
 	}
 
 	@Override

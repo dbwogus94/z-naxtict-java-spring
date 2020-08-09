@@ -60,9 +60,17 @@ function boardDelete(boardType, boardNum){
 				</tr>
 				<tr>
 					<td align="center">
-					Writer
+						Writer	
 					</td>
 					<td>
+						<c:choose>
+						<c:when test="${board.creator eq  'SYSTEM'}">
+							&nbsp;Writer
+						</c:when>
+						<c:otherwise>
+							&nbsp;${userName}
+						</c:otherwise>
+					</c:choose>
 					</td>
 				</tr>
 			</table>

@@ -33,6 +33,12 @@ public class UserDaoImpl implements UserDao {
 		logger.info("[Dao] login param : " + userVo);
 		return sqlSession.selectOne(MAPPERNAME + "login", userVo);
 	}
+
+	@Override
+	public String searchName(String userId) {
+		logger.info("[Dao] searchName param : " + userId);
+		return sqlSession.selectOne(MAPPERNAME + "searchName", userId);
+	}
 	
 	
 	

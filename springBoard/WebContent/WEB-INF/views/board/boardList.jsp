@@ -7,33 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>list</title>
 </head>
-<script type="text/javascript">
-	document.addEventListener("DOMContentLoaded", function () {
-	    //  == $(document).ready(function() {}
-		var chk = document.querySelectorAll("input[name='boardTypeArr']");
-	    for (var i = 0; i < chk.length; i++) {
-	    	chk[i].addEventListener("click", function () {
-	        	var chk = document.querySelectorAll("input[name='boardTypeArr']");
-	        	var chked = document.querySelectorAll("input[name='boardTypeArr']:checked");
-	        	var all_chk = document.getElementById("all");
-	        	if (chk.length == chked.length) {
-	          		all_chk.checked = true;
-	        	} else {
-	          		all_chk.checked = false;
-	        	}
-	      	});
-	    }
-	});
-
-	function checkAll(ischk) {
-		var chk = document.querySelectorAll("input[name='boardTypeArr']");
-		for (var i = 0; i < chk.length; i++) {
-			chk[i].checked = ischk;
-		}
-	}
-</script>
+<script src="/resources/js/board/boardList.js"></script>
 <body>
-<form action="/board/boardList.do" method="get">
 <table  align="center">
 	<tr>
 		<td colspan="2">
@@ -67,8 +42,7 @@
 						Title
 					</td>
 				</tr>
-				<c:forEach items="${boardList}" var="list">
-					
+				<c:forEach items="${boardList}" var="list">					
 					<tr>
 						<td align="center">
 							<c:forEach items="${comCodeList}" var="comCodeVo">
@@ -106,11 +80,10 @@
 			<c:forEach items="${comCodeList}" var="comCodeVo">
 				<input type="checkbox" name="boardTypeArr" value="${comCodeVo.codeId }" />${comCodeVo.codeName }&nbsp;
 			</c:forEach>
-			<input type="submit" value="조회"/>
+			<input type="button" value="조회" onclick="search();"/>
 		</td>
 	</tr> 
 </table>	
-</form>
 
 
 	

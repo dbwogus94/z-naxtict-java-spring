@@ -8,22 +8,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>boardWrite</title>
 </head>
-
+<style type="text/css">
+</style>
 <script src="/resources/js/board/boardWrite.js"></script>
 <body>
 <form class="boardWrite">
 	<input name="creator" type="hidden" size="50" value="${login.userId}"/>
-	<table align="center">
+	<table align="center" class="mainTable">
 		<tr>
 			<td align="right">
 				<input id="button" type="button" value="행추가" onclick="addTable();">
-				<input id="button" type="button" value="행삭제" onclick="removeTable();">
 				<input id="submit" type="button" value="작성">
 			</td>
 		</tr>
-		<tr>
+		<tr class="table">
 			<td>
-				<table border ="1" class="table" width="550">
+				<table border ="1" width="550">
 					<tr>
 						<td align="center">
 							Type
@@ -54,7 +54,7 @@
 					</tr>
 					<tr>
 						<td align="center">
-								Writer
+							Writer
 						</td>
 						<td>
 							<c:choose>
@@ -70,6 +70,7 @@
 				</table>
 			</td>
 		</tr>
+		
 		<tr>
 			<td align="right">
 				<a href="/board/boardList.do">List</a>

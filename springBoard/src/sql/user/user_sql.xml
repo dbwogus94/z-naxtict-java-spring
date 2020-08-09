@@ -28,7 +28,6 @@
 		WHERE USER_ID = #{userId}
     </select>
     
-   
    	<insert id="insertUser" parameterType="com.spring.user.vo.UserVo">
 	   	INSERT INTO 
 		USER_INFO(
@@ -62,5 +61,12 @@
 	        ,TO_CHAR(SYSDATE)
 	        )        
    	</insert>
+   	
+   	<select id="searchName" parameterType="String" resultType="String">
+   		SELECT 
+    		USER_NAME
+    	FROM USER_INFO
+		WHERE USER_ID = #{userId}
+   	</select>
  
 </mapper>
