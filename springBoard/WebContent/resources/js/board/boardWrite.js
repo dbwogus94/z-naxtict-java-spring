@@ -36,6 +36,10 @@ function addTable(){
 	var mainTrs = $j(".mainTable > tbody > tr");
 	var targetTable = mainTrs.eq(1);
 	var cloneElements = $j(targetTable).clone(false);
+	
+	cloneElements.find("input[name='boardTitle']").val("");
+	cloneElements.find("textarea[name='boardComment']").val("");
+	
 	mainTrs.eq(mainTrs.length-2).after(cloneElements);
 	mainTrs.eq(mainTrs.length-2).after('<tr><td align="right"><input type="button" class="btn_delete" value="행삭제" onclick="removeTable();"></td></tr>');	
 	//mainTrs.eq(mainTrs.length-2).after('<br/>');
@@ -69,5 +73,6 @@ function removeTable(){
 //	}
 
 }
+
 
 

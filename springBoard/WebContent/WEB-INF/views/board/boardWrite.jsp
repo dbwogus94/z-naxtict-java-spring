@@ -59,7 +59,6 @@
 						<td>
 							<c:choose>
 								<c:when test="${empty login}">
-									Writer
 								</c:when>
 								<c:otherwise>
 									&nbsp;${login.userName}

@@ -51,7 +51,7 @@
 								</c:if>
 							</c:forEach>
 						</td>
-						<td>
+						<td align="center">
 							${list.boardNum}
 						</td>
 						<td>
