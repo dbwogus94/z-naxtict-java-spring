@@ -126,23 +126,30 @@ let onkeyEvent_Addr1 = (e) => {
 	let target = e.currentTarget;
 	let msg = search_msg("msg_postNo");
 	let regexp =  /[^0-9-]/gi			// /[^0-9]/gi;  	// /\d{3}-\d{3}/gi;
+	let temp = '';
 	chk06 = false;
-	// 숫자가 아니면 지운다
+	console.log(target)
+	
 	if(target.value !== "" && regexp.test(target.value)){ 
-		console.log(target.value)
 		target.value = target.value.replace(regexp, ''); // 숫자 이외면 ""으로 변환
 		msg.innerHTML = "우편번호는 숫자로 입력하세요";
 		msg.style.color = "red";
 		chk06 = true;
+		return false;
 	} else if(target.value.length > 7){
 		cutString(target, 7);
 		msg.innerHTML = "우편번호는 6자리 숫자로 입력하세요";
 		msg.style.color = "red";
+		return false;
 	} else if(target.value === "" || target.value === undefined){
 		chk06 = true;
 		msg.innerHTML = "";
+		return false;
 	} else {
+		target.value = autoHypenPhone(target.value);
+		chk06 = true;
 		msg.innerHTML = "";
+		return false;
 	}
 }
 
@@ -234,8 +241,8 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
 	let userAddr1 = document.querySelector("input[name='userAddr1']");
 	userAddr1.addEventListener("keyup", onkeyEvent_Addr1);
-	userAddr1.addEventListener("keypress", onkeyprassEvent_Addr1);
-	userAddr1.addEventListener("keydown", onkeydown_Addr1);
+	//userAddr1.addEventListener("keypress", onkeyprassEvent_Addr1);
+	//userAddr1.addEventListener("keydown", onkeydown_Addr1);
 });
 
 document.addEventListener("DOMContentLoaded", () => {
