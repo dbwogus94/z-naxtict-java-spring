@@ -92,7 +92,7 @@ function numberKey() {
 }
 
 
-// 전화번호 입력 자동, 우편번호 자동입력
+// keyup: 전화번호 입력 자동, 우편번호 자동입력
 var autoHypenPhone = function(str){
     str = str.replace(/[^0-9]/g, '');
     var tmp = '';

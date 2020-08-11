@@ -78,5 +78,16 @@ public class boardServiceImpl implements boardService{
 		// TODO Auto-generated method stub
 		return boardDao.boardDelete(boardVo);
 	}
+
+	@Override
+	public int[] boardInsert_ver02(BoardVo boardVo) throws Exception {
+		logger.info("[boardInsert_ver02] param " + boardVo.getBoardList());
+		int[] res = new int[boardVo.getBoardList().size()];
+		
+		for(int i = 0; i < res.length; i++) {
+			res[i] = boardDao.boardInsert(boardVo.getBoardList().get(i));
+		}
+		return res;
+	}
 	
 }

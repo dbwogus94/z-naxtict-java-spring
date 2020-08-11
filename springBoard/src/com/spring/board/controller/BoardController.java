@@ -71,6 +71,7 @@ public class BoardController {
 		return "board/boardList";
 	}
 	
+	// 리스트 검색결과 비동기통신 jackson을 사용하여 json형태로 리턴
 	@RequestMapping(value = "/board/boardSearch.do", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> boardSearch(PageVo pageVo, @RequestParam(value = "boardTypeArr", required = false) String[] boardTypeArr) throws Exception{
@@ -89,6 +90,26 @@ public class BoardController {
 		output.put("comCodeList", comCodeList);
 		logger.info("[boardSearch.do] 글조회 output ==> " + output);
 		return output;
+	}
+	
+	// 리스트 검색결과 modelAndView를 통하여 html형태로 응답
+	@RequestMapping(value = "/board/boardSearch_html.do", method = RequestMethod.GET)
+	public String boardSearch_html(Model model, PageVo pageVo, @RequestParam(value = "boardTypeArr", required = false) String[] boardTypeArr) throws Exception{
+		logger.info("[boardSearch.do] 글 조회 ==> 페이지 : " + Arrays.toString(boardTypeArr));
+		List<BoardVo> boardList = new ArrayList<BoardVo>();
+		List<ComCodeVo> comCodeList = new ArrayList<ComCodeVo>();
+		if(pageVo.getPageNo() == 0){
+			pageVo.setPageNo(1);
+		}
+		// 리스트 조회
+		boardList = boardService.SelectBoardList(pageVo, boardTypeArr);
+		// 검색조건 리스트 조회
+		comCodeList = comCodeService.getCode_type("menu");
+		
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("comCodeList", comCodeList);
+		
+		return "board/boardList";
 	}
 	
 	
@@ -121,11 +142,14 @@ public class BoardController {
 	@RequestMapping(value = "/board/boardWriteAction.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String boardWriteAction(Locale locale, BoardVo boardVo, HttpSession session) throws Exception{
+		logger.info("[boardWriteAction.do] 글 작성 ver01 boardVo : " + boardVo);
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil(); 	// 
 		UserVo login = (UserVo) session.getAttribute("login");
 		if(login != null) {
 			boardVo.setCreator(login.getUserId());
+		} else {
+			boardVo.setCreator("SYSTEM");
 		}
 		int[] resultCnt = boardService.boardInsert(boardVo);
 		result.put("success", (resultCnt.length > 0)?"Y":"N");
@@ -133,6 +157,39 @@ public class BoardController {
 		logger.info("callbackMsg::"+callbackMsg);
 		return callbackMsg;
 	}
+	
+	@RequestMapping(value = "/board/boardWrite_ver02.do", method = RequestMethod.GET)
+	public String boardWrite_ver02(Locale locale, Model model) throws Exception{
+		logger.info("[boardWrite.do] 글 작성 페이지 ver02");
+		List<ComCodeVo> comCodeList = comCodeService.getCode_type("menu");
+		model.addAttribute("comCodeList", comCodeList);
+		return "board/boardWrite_ver02";
+	}
+	
+	@RequestMapping(value = "/board/boardWriteAction_ver02.do")
+	@ResponseBody
+	public String boardWriteAction_ver02(BoardVo boardVo, HttpSession session) throws Exception {
+		logger.info("[boardWriteAction.do] 글 작성 ver02 boardVo : " + boardVo);
+		HashMap<String, String> result = new HashMap<String, String>();
+		CommonUtil commonUtil = new CommonUtil(); 	// 
+		
+		UserVo login = (UserVo) session.getAttribute("login");
+		if(login != null) {
+			for(BoardVo temp : boardVo.getBoardList()) {
+				temp.setCreator(login.getUserId());
+			}
+		} else {
+			for(BoardVo temp : boardVo.getBoardList()) {
+				temp.setCreator("SYSTEM");
+			}
+		}
+		int[] resultCnt = boardService.boardInsert_ver02(boardVo);
+		result.put("success", (resultCnt.length > 0)?"Y":"N");
+		String callbackMsg = commonUtil.getJsonCallBackString(" ",result);
+		logger.info("callbackMsg::"+callbackMsg);
+		return callbackMsg;
+	}
+	
 	
 	@RequestMapping(value="/board/boardUpdate.do", method = RequestMethod.GET)
 	public String boardUpdate(Model model, HttpServletResponse response, @RequestParam(value="boardType", defaultValue = "1")String boardType, @RequestParam(value="boardNum", defaultValue = "1")int boardNum) throws Exception {

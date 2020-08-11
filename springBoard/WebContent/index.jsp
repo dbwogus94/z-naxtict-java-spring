@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<a href="index.do">홈 테스트</a>
-	<a href="board/boardList.do">게시판</a>
+	<jsp:forward page="board/boardList.do"></jsp:forward>
 </body>
 </html>

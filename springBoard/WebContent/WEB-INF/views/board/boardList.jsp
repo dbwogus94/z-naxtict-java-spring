@@ -65,6 +65,7 @@
 	<tr>
 		<td align="right">
 			<a href ="/board/boardWrite.do">글쓰기</a>
+			<a href ="/board/boardWrite_ver02.do">글쓰기_ver2</a>
 			<c:choose>
 				<c:when test="${empty login}">
 				</c:when>
@@ -81,6 +82,7 @@
 				<input type="checkbox" name="boardTypeArr" value="${comCodeVo.codeId }" />${comCodeVo.codeName }&nbsp;
 			</c:forEach>
 			<input type="button" value="조회" onclick="search();"/>
+			<input type="button" value="조회_ver2" onclick="search_html();"/>
 		</td>
 	</tr> 
 </table>	

@@ -67,3 +67,32 @@ function search(){
 	    }
 	});
 }
+
+function search_html(){
+	var url = "/board/boardSearch_html.do";
+	var $chk = $j('input[name="boardTypeArr"]'); 	// 클래스명이 .boardWrite인 input태그(textarea 포함) 가져오기 >> 배열 
+	
+	if($j('input[name="boardTypeArr"]:checked').length < 1){
+		alert("하나이상 체크 해주세요!")
+		return false;
+	}
+	
+	var param = $chk.serialize();			// 직열화 쿼리스트링으로 만들어준다.
+	
+	$j.ajax({
+	    url : url,
+	    dataType: "html",
+	    type: "get",
+	    data : param,			// post방식에 사용할 쿼리스트링
+	    success: function(data, textStatus, jqXHR)
+	    {
+	    	console.log(data)
+	    	
+	    	document.getElementsByTagName("body")[0].innerHTML = data
+	    },
+	    error: function (jqXHR, textStatus, errorThrown)
+	    {
+	    	alert("실패");
+	    }
+	});
+}
