@@ -55,7 +55,18 @@ function search(){
 	    		for(var j = 0; j < comCodeList.length; j++){
 	    			if(comCodeList[j].codeId === boardVo.boardType){
 	    				$j('#boardTable > tbody:last')
-			    		.append(`<tr><td align="center">${comCodeList[j].codeName}</td><td align="center">${boardVo.boardNum}</td><td>${boardVo.boardTitle}</td></tr>`);
+			    		.append(`<tr>
+			    					<td align="center">
+			    						${comCodeList[j].codeName}
+			    					</td>
+				    				<td align="center">
+				    					${boardVo.boardNum}
+				    				</td>
+				    				<td>
+				    					<a href = "/board/${boardVo.boardType}/${boardVo.boardNum}/boardView.do?pageNo=${data.pageVo.pageNo}">${boardVo.boardTitle}</a>
+				    				</td>
+			    				</tr>`);
+	    				$j("#total").text("total : " + data.totalCnt)
 	    				break;
 	    			}
 	    		}
@@ -88,7 +99,7 @@ function search_html(){
 	    {
 	    	console.log(data)
 	    	
-	    	document.getElementsByTagName("body")[0].innerHTML = data
+	    	document.getElementsByTagName("body")[0].innerHTML = data;
 	    },
 	    error: function (jqXHR, textStatus, errorThrown)
 	    {

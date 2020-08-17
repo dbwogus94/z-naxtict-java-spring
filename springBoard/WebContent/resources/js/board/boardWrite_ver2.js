@@ -28,7 +28,8 @@ $j(document).ready(function(){
 			param += `boardList[${i}].boardComment=`
 			param += comment.eq(i).val() + "&"	
 		}
-
+		console.log(param)
+		return;
 		
 		$j.ajax({
 		    url : "/board/boardWriteAction_ver02.do",

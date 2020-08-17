@@ -83,9 +83,10 @@ public class boardServiceImpl implements boardService{
 	public int[] boardInsert_ver02(BoardVo boardVo) throws Exception {
 		logger.info("[boardInsert_ver02] param " + boardVo.getBoardList());
 		int[] res = new int[boardVo.getBoardList().size()];
-		
-		for(int i = 0; i < res.length; i++) {
-			res[i] = boardDao.boardInsert(boardVo.getBoardList().get(i));
+		int i =0;
+		for(BoardVo vo : boardVo.getBoardList()) {
+			res[i] = boardDao.boardInsert(vo);
+			i++;
 		}
 		return res;
 	}

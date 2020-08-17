@@ -23,7 +23,7 @@
 				</c:otherwise>
 			</c:choose>
 			</span>
-			<span style="text-align: right;">total : ${totalCnt}</span>
+			<span id="total" style="text-align: right;">total : ${totalCnt}</span>
 		</td>
 		<td></td>
 		<td></td>

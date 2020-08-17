@@ -9,7 +9,7 @@ $j(document).ready(function(){
 		}
 		
 		var $frm = $j('.boardWrite :input'); 	// 클래스명이 .boardWrite인 input태그(textarea 포함) 가져오기 >> 배열 
-		var param = $frm.serialize();			// 직열화 쿼리스트링으로 만들어준다.
+		var param = $frm.serialize();			// 직렬화 쿼리스트링으로 만들어준다.
 		
 		$j.ajax({
 		    url : "/board/boardWriteAction.do",

@@ -79,8 +79,10 @@ public class BoardController {
 		Map<String, Object> output = new HashMap<String, Object>();
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 		List<ComCodeVo> comCodeList = new ArrayList<ComCodeVo>();
+		int page = 1;
+		int totalCnt = 0;
 		if(pageVo.getPageNo() == 0){
-			pageVo.setPageNo(1);
+			pageVo.setPageNo(page);
 		}
 		// 리스트 조회
 		boardList = boardService.SelectBoardList(pageVo, boardTypeArr);
@@ -88,6 +90,11 @@ public class BoardController {
 		// 검색조건 리스트 조회
 		comCodeList = comCodeService.getCode_type("menu");
 		output.put("comCodeList", comCodeList);
+		// 게시물 총개수 조회
+		totalCnt = boardService.selectBoardCnt(boardTypeArr);
+		output.put("totalCnt", totalCnt);
+		// 게시물 번호
+		output.put("pageVo", pageVo);
 		logger.info("[boardSearch.do] 글조회 output ==> " + output);
 		return output;
 	}
@@ -98,16 +105,22 @@ public class BoardController {
 		logger.info("[boardSearch.do] 글 조회 ==> 페이지 : " + Arrays.toString(boardTypeArr));
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 		List<ComCodeVo> comCodeList = new ArrayList<ComCodeVo>();
+		int page = 1;
+		int totalCnt = 0;
 		if(pageVo.getPageNo() == 0){
-			pageVo.setPageNo(1);
+			pageVo.setPageNo(page);
 		}
 		// 리스트 조회
 		boardList = boardService.SelectBoardList(pageVo, boardTypeArr);
 		// 검색조건 리스트 조회
 		comCodeList = comCodeService.getCode_type("menu");
+		// 게시물 총개수 조회
+		totalCnt = boardService.selectBoardCnt(boardTypeArr);
 		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("comCodeList", comCodeList);
+		model.addAttribute("totalCnt", totalCnt);
+		model.addAttribute("pageNo", page);
 		
 		return "board/boardList";
 	}
